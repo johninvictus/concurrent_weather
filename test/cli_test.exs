@@ -1,4 +1,4 @@
-defmodule ConcurrentWeatherTest do
+defmodule CLITest do
   use ExUnit.Case
   import  ConcurrentWeather.CLI, only: [parse_argv: 1]
 
