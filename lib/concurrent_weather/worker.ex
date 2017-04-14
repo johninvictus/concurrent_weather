@@ -13,11 +13,11 @@ defmodule ConcurrentWeather.Worker do
 
         case response do
           {:ok, temp} ->
-            send(sender_pid, "city: #{temp}")
+            send sender_pid, {:ok, "#{city} : #{temp}"}
 
           {:error, reason} ->
             Logger.error "Error occured getting temparature of:: #{city} reason:: #{reason}"
-            send sender_pid, "not found"
+            send sender_pid, {:ok, "#{city} not found"}
         end
       end
   end

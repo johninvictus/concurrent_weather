@@ -38,7 +38,13 @@ defmodule ConcurrentWeather.CLI do
   end
 
   def process({cities}) do
+    condinator = spawn(ConcurrentWeather.Coordinator, :loop, [])
     cities
+    |> Enum.each(fn city ->
+        pid = spawn(ConcurrentWeather.Worker, :loop, [])
+       send pid, {condinator, city}
+     end)
   end
+
 
 end
