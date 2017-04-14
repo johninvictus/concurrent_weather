@@ -1,5 +1,5 @@
 defmodule ConcurrentWeather.CLI do
-
+  require Logger
   @moduledoc """
   This module will interact with the command line.
   """
@@ -19,15 +19,17 @@ defmodule ConcurrentWeather.CLI do
   """
   def parse_argv(argv) do
     parse = OptionParser.parse(argv, switches: [help: :boolean],
-                                      alias: [h: :help])
+                  aliases: [h: :help])
+
+
 
     parse
     |> parse
   end
 
-  def parse({[helps: true], _, _}), do: :help
+  def parse({[help: true], _, _}), do: :help
 
-  def parse({_, [cities], _}) when is_list(cities) do
+  def parse({_, cities, _}) do
     {cities}
   end
 
@@ -38,7 +40,7 @@ defmodule ConcurrentWeather.CLI do
   end
 
   def process({cities}) do
-    condinator = spawn(ConcurrentWeather.Coordinator, :loop, [])
+    condinator = spawn(ConcurrentWeather.Coordinator, :loop, [[], Enum.count(cities)])
     cities
     |> Enum.each(fn city ->
         pid = spawn(ConcurrentWeather.Worker, :loop, [])

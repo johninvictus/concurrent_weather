@@ -6,6 +6,7 @@ defmodule ConcurrentWeather.Mixfile do
      version: "0.1.0",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
+     escript: escript_config(),
      start_permanent: Mix.env == :prod,
      deps: deps()]
   end
@@ -33,4 +34,9 @@ defmodule ConcurrentWeather.Mixfile do
       {:json, "~> 1.0"}
     ]
   end
+
+  defp escript_config do
+    [main_module: ConcurrentWeather.CLI]
+  end
+
 end
