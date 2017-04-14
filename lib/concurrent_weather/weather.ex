@@ -1,5 +1,9 @@
 defmodule ConcurrentWeather.Weather do
 
+  @moduledoc """
+  This module will contact the weather API and do return the temparature.
+  """
+
   @doc """
     get a single city temparature.
   """
@@ -12,6 +16,7 @@ defmodule ConcurrentWeather.Weather do
   defp create_url(city) do
      "http://api.openweathermap.org/data/2.5/weather?q=#{city}&appid=#{api_key()}"
   end
+
 
 defp api_key do
   "c5bcd52c435ecaf5f659ccac8d3c1311"
