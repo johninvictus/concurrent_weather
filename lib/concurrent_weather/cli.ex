@@ -21,8 +21,6 @@ defmodule ConcurrentWeather.CLI do
     parse = OptionParser.parse(argv, switches: [help: :boolean],
                   aliases: [h: :help])
 
-
-
     parse
     |> parse
   end
@@ -40,13 +38,21 @@ defmodule ConcurrentWeather.CLI do
   end
 
   def process({cities}) do
+
     condinator = spawn(ConcurrentWeather.Coordinator, :loop, [[], Enum.count(cities)])
     cities
     |> Enum.each(fn city ->
         pid = spawn(ConcurrentWeather.Worker, :loop, [])
        send pid, {condinator, city}
      end)
+
+     # receive the main
+     receive do
+       {:ok, results} ->
+         IO.puts results
+
+       after 5000 ->
+          IO.puts "time out"
+     end
   end
-
-
 end
